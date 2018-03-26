@@ -1,0 +1,37 @@
+     1                                  [org 0x0100]
+     2                                  
+     3                                  
+     4 00000000 BB[3400]                mov bx,data
+     5 00000003 BD[3400]                mov bp,data                      ;storing address of first and last elements
+     6 00000006 BE[4400]                mov si,data+16
+     7                                  
+     8 00000009 01F3                    lable :add bx,si
+     9 0000000B 89DF                           mov di,bx        ;calculating address of middle element
+    10 0000000D D1EF                           shr di,1
+    11                                         
+    12 0000000F A1[4600]                mov ax,[searchdata]       ;moving the searching element
+    13 00000012 3B05                    cmp ax,[di]               ;comparing searching element with the middle element
+    14 00000014 7414                    je exit                   ;exit if the element is present in the middle
+    15 00000016 7702                    ja update
+    16 00000018 7208                    jb updateadd
+    17                                  
+    18                                  
+    19                                  
+    20                                  
+    21 0000001A 81C70200                update:add di,2
+    22 0000001E 89FB                    mov bx,di
+    23 00000020 EBE7                    jmp lable
+    24 00000022 81EF0200                updateadd:sub di,2
+    25 00000026 89FB                    mov bx,di
+    26 00000028 EBDF                    jmp lable
+    27 0000002A C606[4800]01            exit:mov byte[found],1
+    28                                  
+    29 0000002F B8004C                  mov ax,0x4c00
+    30 00000032 CD21                    int 21h
+    31                                  
+    32                                  
+    33                                  
+    34 00000034 0A0019001E00230028-     data: dw 10,25,30,35,40,45,50,55,60
+    35 0000003D 002D00320037003C00 
+    36 00000046 3700                    searchdata: dw 55
+    37 00000048 0000                    found:dw 0
